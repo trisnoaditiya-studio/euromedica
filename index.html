@@ -3473,6 +3473,7 @@ body{gap:40px}
   <div class="pfb"><button type="button" data-fbpush></button><button type="button" data-fbreset></button></div>
   <span class="cap" id="pFbC"></span>
   <hr>
+  <a class="link" href="admin.html" target="_blank" rel="noopener" style="align-self:flex-start;padding:0;min-height:32px;display:inline-flex;align-items:center" id="pCms">Buka CMS admin ↗</a>
   <button type="button" class="link" style="align-self:flex-start;padding:0;min-height:32px" data-restart data-i="d_restart"></button>
 </aside>
 
@@ -4657,7 +4658,7 @@ function nfClose(){popClose($('#nfPop'));sbFor(cur);}
 function renderNF(){var act=S.hmode==='act',it=[];
   $('#nf-h').textContent=L(C6('Notifikasi','Notifications'));
   if(act&&S.fb.st!=='sent')it.push({u:1,ic:FB_STAR,a:'fb',tm:'17:05',t:C6('Bagaimana '+FBV.n+' tadi?','How was '+FBV.n+'?'),s:C6('Beri nilai dalam satu tap dan dapat +50 Glow Points.','Rate it in one tap and get +50 Glow Points.')});
-  if(act&&S.fb.st==='sent'&&S.fb.r<=2)it.push({u:1,ic:FB_CHAT,a:'fbfix',tm:L(C6('Baru saja','Just now')),t:C6(FB_MGR.n+' membalas feedback-mu','​'+FB_MGR.n+' replied to your feedback'),s:C6('“Halo '+fbFirst()+', mohon maaf atas kunjungan kemarin. Boleh saya telepon sebentar?”','“Hi '+fbFirst()+', I’m sorry about your visit. May I give you a quick call?”')});
+  if(act&&S.fb.st==='sent'&&S.fb.r<=2)it.push({u:1,ic:FB_CHAT,a:'fbfix',tm:L(C6('Baru saja','Just now')),t:C6(FB_MGR.n+' membalas feedback-mu',FB_MGR.n+' replied to your feedback'),s:C6('“Halo '+fbFirst()+', mohon maaf atas kunjungan kemarin. Boleh saya telepon sebentar?”','“Hi '+fbFirst()+', I’m sorry about your visit. May I give you a quick call?”')});
   if(act&&S.fb.st==='sent')it.push({ic:FB_STAR,a:'rewards',tm:L(C6('Baru saja','Just now')),t:C6('+50 poin dari feedback-mu','+50 points for your feedback'),s:C6('Terima kasih sudah menilai '+FBV.n+'.','Thanks for rating '+FBV.n+'.')});
   it.push({ic:FB_BOLT,a:'mhours',tm:'12:00',t:C6('Members’ hours sedang berlangsung','Members’ hours is live'),s:C6('Hemat hingga 32% untuk member. Kuota terbatas.','Members save up to 32%. Limited slots.')});
   it.push(act?{ic:FB_CAL,a:'home',tm:L(C6('Kemarin','Yesterday')),t:C6('Kunjungan berikutnya Kamis, 12 Nov','Next visit Thursday, 12 Nov'),s:C6('14:30 · '+FBV.doc+' · '+FBV.cl,'14:30 · '+FBV.doc+' · '+FBV.cl)}
@@ -4864,6 +4865,35 @@ var _rVdTk=renderVoucher;renderVoucher=function(){_rVdTk.apply(this,arguments);v
       +'<p class="vt-show">'+esc(t('vd_show'))+'</p></div>'
     +(until?'<div class="vt-exp'+(soon?' soon':'')+'"><span>'+esc(L(C6('Berlaku s/d ','Valid until ')))+'<b>'+esc(until)+'</b></span>'+(dl!=null&&dl>=0?'<em>'+esc(L(C6(dl+' hari lagi','in '+dl+' days')))+'</em>':'')+'</div>':'');};
 document.addEventListener('click',function(e){if(e.target.closest('#vdCopy')){e.preventDefault();e.stopImmediatePropagation();var v=vdGet(S.vd);try{navigator.clipboard&&navigator.clipboard.writeText(v&&v.code||'').catch(function(){});}catch(err){}toast(L(C6('Kode voucher disalin','Voucher code copied')));}},true);
+
+/* ===== shared demo store: member app <-> admin CMS (same browser) ===== */
+var ST_KEY='eu-demo-shared';
+function stGet(){try{return JSON.parse(localStorage.getItem(ST_KEY))||{};}catch(e){return {};}}
+function stSet(o){o.ts=Date.now();try{localStorage.setItem(ST_KEY,JSON.stringify(o));}catch(e){}}
+function stPush(k,item){var o=stGet();o[k]=o[k]||[];o[k].unshift(item);stSet(o);}
+var stSig={promo:null,vch:null,reply:null};
+function stVch(v){var u=v.until||'31 Des 2026';return {id:'adm-'+v.id,adm:1,code:v.code,worth:{id:v.worth,en:v.worth},amt:0,until:{id:u,en:u},where:{id:'Semua klinik '+v.b,en:'All '+v.b+' clinics'},comb:false,
+  terms:[{id:'Voucher dari Euromedica, berlaku satu kali.',en:'A voucher from Euromedica, single use.'},{id:'Tidak dapat dipindahtangankan dan tidak dapat ditukar uang.',en:'Not transferable and not exchangeable for cash.'},{id:'Tunjukkan kode di resepsionis sebelum perawatan dimulai.',en:'Show this code at reception before your treatment begins.'}],
+  t:{id:v.t,en:v.t},b:v.b,s:{id:'Berlaku s/d '+u,en:'Valid until '+u},fresh:1,tr:v.tr||null};}
+function stSync(live){var o=stGet(),msg=null;
+  var p=o.promo&&o.promo.kb;if(p){var sg=p.left+'|'+p.status;if(sg!==stSig.promo){var first=stSig.promo===null;stSig.promo=sg;FS[0].left=Math.max(0,+p.left||0);
+    var out=p.status==='out'||FS[0].left<=0;if(out)S.sim='out';else if(S.sim==='out')S.sim='normal';
+    $$('[data-sim]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.sim===S.sim?'true':'false');});
+    if(live&&!first)msg=out?L(C6('Promo Kiloburn diperbarui: kuota habis','Kiloburn offer updated: sold out')):L(C6('Promo Kiloburn diperbarui: sisa '+FS[0].left+' slot','Kiloburn offer updated: '+FS[0].left+' spots left'));}}
+  var vs=(o.vouchers||[]).filter(function(v){return v.sent!==false;}),vsg=vs.map(function(v){return v.id;}).join(',');
+  if(vsg!==stSig.vch){var prevN=stSig.vch===null?null:(stSig.vch?stSig.vch.split(',').length:0);stSig.vch=vsg;S.vch=S.vch.filter(function(v){return !v.adm;});S.vch=vs.map(stVch).concat(S.vch);
+    if(live&&prevN!=null&&vs.length>prevN)msg=L(C6('Voucher baru masuk: '+vs[0].t,'New voucher: '+vs[0].t));}
+  var fa=(o.feedback||[])[0],rsg=fa&&fa.reply?fa.id+'|'+fa.reply:'';
+  if(rsg!==stSig.reply){var had=stSig.reply!==null;stSig.reply=rsg;if(live&&had&&rsg)msg=L(C6('Balasan baru dari klinik','New reply from the clinic'));}
+  if(msg)toast(msg);}
+var _rBkdSt=renderBooked;renderBooked=function(){_rBkdSt.apply(this,arguments);var k=S.bk;if(k&&!k._st){k._st=1;stPush('bookings',{code:k.code,n:k.n,b:k.b,cl:k.cl,mo:k.mo,day:k.day,time:k.time,pay:k.pay,name:(S.name||'Anindya Putri').trim(),ts:Date.now(),status:'confirmed'});}};
+var _fbSendSt=fbSend;fbSend=function(){_fbSendSt.apply(this,arguments);var f=S.fb,tg=f.r<=2?FB_DN:FB_UP;
+  stPush('feedback',{id:'app-'+Date.now(),ts:Date.now(),r:f.r,tags:f.tags.map(function(i){return tg[i].id;}),msg:(f.msg||'').trim(),name:(S.name||'Anindya Putri').trim(),n:FBV.n,b:FBV.b,cl:FBV.cl,doc:FBV.doc,call:!!f.call,status:f.r<=2?'new':'done'});stSig.reply='';};
+document.addEventListener('click',function(e){if(e.target.closest('#fbCall')){setTimeout(function(){var o=stGet(),fa=(o.feedback||[])[0];if(fa&&/^app-/.test(fa.id)){fa.call=true;stSet(o);}},0);}},true);
+var _rNFst=renderNF;renderNF=function(){_rNFst.apply(this,arguments);var fa=(stGet().feedback||[])[0],it=$('#nfBody [data-nf="fbfix"]');
+  if(fa&&fa.reply&&it){var b=it.querySelector('b'),sm=it.querySelector('small');if(b)b.textContent=L(C6('Balasan dari klinik '+fa.cl,'Reply from '+fa.cl+' clinic'));if(sm)sm.textContent='“'+fa.reply+'”';it.classList.add('un');}};
+window.addEventListener('storage',function(e){if(e.key!==ST_KEY)return;stSync(true);apply();if($('#nfPop')&&!$('#nfPop').hidden)renderNF();});
+stSync(false);
 
 apply();
 show(location.hash.replace(/^#\/?/,'')||'intro');
