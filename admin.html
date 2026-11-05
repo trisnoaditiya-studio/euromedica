@@ -201,6 +201,19 @@ button{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.live-dot i{animation:none}.toast{transition:none}}
 @media (max-width:1180px){.c-5{grid-template-columns:repeat(3,minmax(0,1fr))}.c-2-1,.fb-wrap{grid-template-columns:1fr}.promo{grid-template-columns:96px minmax(0,1fr)}.promo .ctl{grid-column:1/-1}.fbd{position:static}.sbox{display:none}}
 @media (max-width:820px){.app{grid-template-columns:1fr}.side{position:static;height:auto}.c-5,.c-1-1,.c-3{grid-template-columns:1fr 1fr}}
+/* ===== members, clinics, flash-sale settings ===== */
+.fbi .emo.mav,.emo.mav{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center;background:#F3E7EC;color:#6E2F4A;font:700 13px/1 var(--f-ui)}
+.mq{width:100%;height:38px;padding:0 12px;border:1px solid var(--line);border-radius:10px;font:500 13px/1 var(--f-ui);background:var(--surface)}
+.mstat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mstat div{padding:12px 14px;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:4px}
+.mstat small{font:600 11.5px/1.2 var(--f-ui);color:var(--ink2)}
+.mstat b{font:700 20px/1 var(--f-ui);font-variant-numeric:tabular-nums}
+.mstat em{font:700 11px/1 var(--f-ui);font-style:normal;color:#B4690E}
+.mh{margin:6px 0 -4px;font:700 12px/1 var(--f-ui);letter-spacing:.6px;text-transform:uppercase;color:var(--ink2)}
+.mhist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.mhist li{display:grid;grid-template-columns:64px 1fr auto;gap:10px;align-items:center}
+.ckl{display:flex;flex-direction:column;gap:8px;font-size:13px}
+.ckl label{display:flex;align-items:center;gap:8px;font-weight:500}
 </style>
 </head>
 <body>
@@ -501,6 +514,70 @@ $('#q').addEventListener('input',function(){if(cur==='booking')renderBook();else
 var seen={b:(stGet().bookings||[]).length,f:(stGet().feedback||[]).length};
 window.addEventListener('storage',function(e){if(e.key!==KEY)return;var s=stGet(),b=(s.bookings||[]).length,f=(s.feedback||[]).length;
   if(b>seen.b)toast(t('toast_bk'));else if(f>seen.f)toast(t('toast_fb'));seen={b:b,f:f};if(!$('#drw'))route();else renderNav();});
+
+/* ===== gap analysis 5.6: members lookup, clinics, flash-sale settings ===== */
+Object.assign(T.id,{cr_mem:'Operasional / Member',cr_cl:'Operasional / Klinik',m_search:'Cari nama, nomor HP, atau kode member',m_pts:'Saldo poin',m_tier:'Poin tier',m_visits:'Kunjungan',m_brands:'Brand',m_consent:'Persetujuan',m_mkt:'Promosi',m_an:'Analitik',m_health:'Data perawatan & foto',m_hist:'Riwayat terakhir',m_mig:'Migrasi dari app lama',m_pick:'Pilih member untuk melihat detail.',m_app:'Dari app',c_today:'Booking hari ini',c_in:'Check-in',c_ns:'No-show (7 hari)',c_cx:'Batal (7 hari)',c_rate:'Rating',c_fs:'Klinik eligible flash sale',pr_drawer:'Promo flash sale baru',pr_item:'Perawatan / produk',pr_normal:'Harga normal',pr_price:'Harga promo',pr_quota:'Kuota',pr_start:'Mulai',pr_end:'Selesai',pr_elig:'Klinik eligible',pr_pay:'Model bayar',pr_pay_on:'Bayar online penuh',pr_pay_dp:'DP 30% online',pr_pay_cl:'Bayar di klinik',pr_hold:'Slot ditahan 3 menit saat user memilih jadwal.',pr_create:'Simpan promo',pr_need:'Lengkapi harga, kuota, dan minimal satu klinik.',toast_promo:'Promo disimpan.',pr_rule:'Bayar online · hold 3 menit · refund penuh/voucher bila tidak cocok'});
+Object.assign(T.en,{cr_mem:'Operations / Members',cr_cl:'Operations / Clinics',m_search:'Search name, phone or member code',m_pts:'Points balance',m_tier:'Tier points',m_visits:'Visits',m_brands:'Brands',m_consent:'Consent',m_mkt:'Marketing',m_an:'Analytics',m_health:'Treatment data & photos',m_hist:'Recent history',m_mig:'Migrated from the old app',m_pick:'Pick a member to see details.',m_app:'From app',c_today:'Bookings today',c_in:'Checked in',c_ns:'No-shows (7 days)',c_cx:'Cancelled (7 days)',c_rate:'Rating',c_fs:'Flash-sale eligible clinics',pr_drawer:'New flash-sale offer',pr_item:'Treatment / product',pr_normal:'Regular price',pr_price:'Offer price',pr_quota:'Quota',pr_start:'Starts',pr_end:'Ends',pr_elig:'Eligible clinics',pr_pay:'Payment model',pr_pay_on:'Full online payment',pr_pay_dp:'30% online deposit',pr_pay_cl:'Pay at the clinic',pr_hold:'The spot is held for 3 minutes when a member picks a time.',pr_create:'Save offer',pr_need:'Add prices, quota and at least one clinic.',toast_promo:'Offer saved.',pr_rule:'Paid online · 3-min hold · full refund/voucher if not suitable'});
+/* member data is DUMMY for the prototype */
+var MEMBERS=[
+ {id:'EM-10422',name:'Anindya Putri',ph:'+62 812 •••• 2277',tier:'Glow',pts:4820,tp:4820,vis:7,since:'2021',br:['SKIN+','EUROSKINLAB'],c:{mkt:false,an:true,health:true},mig:true,cl:'Gandaria City',app:true,h:[['10 Nov','Medical Trilogy 2.0','SKIN+'],['3 Sep','Hydrolift 50','EUROSKINLAB'],['14 Agu','Medical Trilogy 2.0','SKIN+']]},
+ {id:'EM-10388',name:'Maya Sari',ph:'+62 813 •••• 9012',tier:'Radiant',pts:7340,tp:8100,vis:19,since:'2019',br:['SKIN+'],c:{mkt:true,an:true,health:true},mig:true,cl:'Kota Kasablanka',h:[['9 Nov','Hydrawhite','SKIN+'],['12 Okt','Hydrawhite','SKIN+']]},
+ {id:'EM-10501',name:'Clara Wijaya',ph:'+62 811 •••• 4470',tier:'Glow',pts:1260,tp:2900,vis:4,since:'2024',br:['SLIM+'],c:{mkt:true,an:false,health:true},mig:false,cl:'Pondok Indah Mall 2',h:[['9 Nov','Powercontour','SLIM+']]},
+ {id:'EM-10277',name:'Dewi Lestari',ph:'+62 819 •••• 3381',tier:'Radiant',pts:6120,tp:6400,vis:22,since:'2018',br:['SKIN+','ESC'],c:{mkt:false,an:false,health:true},mig:true,cl:'Gandaria City',h:[['10 Nov','Medical Trilogy 2.0','SKIN+']]},
+ {id:'EM-10615',name:'Nadia Rahma',ph:'+62 857 •••• 1204',tier:'Glow',pts:540,tp:540,vis:1,since:'2026',br:['ESC'],c:{mkt:true,an:true,health:true},mig:false,cl:'ESC Iskandarsyah',h:[['8 Nov','Kiloburn 3× course','ESC']]},
+ {id:'EM-10199',name:'Sinta Halim',ph:'+62 878 •••• 6650',tier:'Glow',pts:2980,tp:3300,vis:9,since:'2020',br:['EUROHAIRLAB'],c:{mkt:false,an:true,health:false},mig:true,cl:'Plaza Blok M',h:[['8 Nov','Scalp recovery programme','EUROHAIRLAB']]}];
+var MSEL='EM-10422';
+function yn(v){return '<span class="pill '+(v?'p-ok':'p-mute')+'"><i></i>'+esc(v?(LANG==='en'?'On':'Aktif'):(LANG==='en'?'Off':'Nonaktif'))+'</span>';}
+function renderMem(){var q=($('#q').value||'').toLowerCase(),list=MEMBERS.filter(function(m){return !q||(m.name+' '+m.ph+' '+m.id).toLowerCase().indexOf(q)>=0;});
+  if(!list.some(function(m){return m.id===MSEL;}))MSEL=list[0]?list[0].id:null;var sel=MEMBERS.filter(function(m){return m.id===MSEL;})[0];
+  $('#view').innerHTML='<div class="fb-wrap"><div class="card"><div class="toolbar"><input id="mQ" class="mq" placeholder="'+esc(t('m_search'))+'" value="'+esc($('#q').value||'')+'"></div>'
+    +(list.length?list.map(function(m){return '<button type="button" class="fbi" data-msel="'+m.id+'" aria-current="'+(m.id===MSEL)+'"><span class="emo mav">'+esc(m.name.split(' ').map(function(w){return w[0];}).join('').slice(0,2))+'</span><span class="tx"><b>'+esc(m.name)+' · '+esc(m.tier)+'</b><p>'+esc(m.id)+' · '+esc(m.ph)+'</p><span class="meta">'+(m.app?'<span class="src">'+esc(t('m_app'))+'</span>':'')+(m.mig?'<span class="pill p-info">'+esc(t('m_mig'))+'</span>':'')+'<span>'+esc(m.cl)+'</span></span></span></button>';}).join(''):'<p class="empty">—</p>')+'</div>'
+    +'<div class="card fbd">'+(sel?'<div style="display:flex;align-items:center;gap:12px"><span class="emo mav" style="width:52px;height:52px;font-size:17px">'+esc(sel.name.split(' ').map(function(w){return w[0];}).join('').slice(0,2))+'</span><div><h3>'+esc(sel.name)+'</h3><span class="muted" style="font-size:12.5px">'+esc(sel.id)+' · '+esc(LANG==='en'?'Member since ':'Member sejak ')+sel.since+'</span></div></div>'
+      +'<div class="mstat"><div><small>'+esc(t('m_pts'))+'</small><b>'+sel.pts.toLocaleString(LANG==='en'?'en-US':'id-ID')+'</b></div><div><small>'+esc(t('m_tier'))+'</small><b>'+sel.tp.toLocaleString(LANG==='en'?'en-US':'id-ID')+'</b><em>'+esc(sel.tier)+'</em></div><div><small>'+esc(t('m_visits'))+'</small><b>'+sel.vis+'</b></div></div>'
+      +'<dl class="kv"><dt>'+esc(t('b_cl'))+'</dt><dd>'+esc(sel.cl)+'</dd><dt>Phone</dt><dd>'+esc(sel.ph)+'</dd><dt>'+esc(t('m_brands'))+'</dt><dd>'+sel.br.map(function(b){return '<span class="btag" style="--bc:'+BC[b]+';height:20px;font-size:10px;margin-right:4px">'+esc(b)+'</span>';}).join('')+'</dd></dl>'
+      +'<h4 class="mh">'+esc(t('m_consent'))+'</h4><dl class="kv"><dt>'+esc(t('m_mkt'))+'</dt><dd>'+yn(sel.c.mkt)+'</dd><dt>'+esc(t('m_an'))+'</dt><dd>'+yn(sel.c.an)+'</dd><dt>'+esc(t('m_health'))+'</dt><dd>'+yn(sel.c.health)+'</dd></dl>'
+      +'<h4 class="mh">'+esc(t('m_hist'))+'</h4><ul class="mhist">'+sel.h.map(function(x){return '<li><span class="mono">'+esc(x[0])+'</span><b>'+esc(x[1])+'</b><span class="btag" style="--bc:'+BC[x[2]]+';height:18px;font-size:9.5px">'+esc(x[2])+'</span></li>';}).join('')+'</ul>'
+      +'<p class="muted" style="margin:0;font-size:12px">'+esc(LANG==='en'?'Prototype: member data is dummy. In production it comes from ERPNext (system of record).':'Prototype: data member dummy. Di produksi diambil dari ERPNext (system of record).')+'</p>'
+      :'<p class="empty">'+esc(t('m_pick'))+'</p>')+'</div></div>';
+  var mq=$('#mQ');if(mq&&document.activeElement!==mq&&$('#q').value){}}
+var CL_ALL=['Gandaria City','Kota Kasablanka','Pondok Indah Mall 2','Plaza Blok M','ESC Iskandarsyah','ESC Kelapa Gading','ESC PIK'];
+function renderCl(){var all=bookingsAll(),r=rng(7);var promos=(stEnsure().promos||[]);
+  var rows=CL_ALL.map(function(c,i){var bk=all.filter(function(b){return b.cl===c;}),td=bk.filter(function(b){return b.day===10;}),ci=td.filter(function(b){return b.status==='checkin'||b.status==='done';}).length,cx=bk.filter(function(b){return b.status==='cancel';}).length+(i%3===0?1:0),ns=[2,1,0,1,0,1,0][i],rt=(4.2+((i*37)%7)/10).toFixed(1),esc1=c.indexOf('ESC')===0;
+    var el=esc1||promos.some(function(p){return (p.cl||[]).indexOf(c)>=0;});
+    return '<tr><td class="who"><b>'+esc(c)+'</b><small>'+esc(esc1?'ESC':(c==='Gandaria City'?'SKIN+ · SLIM+ · ESL':c==='Plaza Blok M'?'SKIN+ · EUROHAIRLAB':'SKIN+ · SLIM+'))+'</small></td><td class="mono" style="text-align:right">'+(td.length+(esc1?2:0))+'</td><td class="mono" style="text-align:right">'+(ci+(esc1?1:0))+'</td><td class="mono" style="text-align:right">'+ns+'</td><td class="mono" style="text-align:right">'+cx+'</td><td class="mono" style="text-align:right">★ '+rt+'</td><td>'+(el?'<span class="pill p-ok"><i></i>'+esc(LANG==='en'?'Eligible':'Eligible')+'</span>':'<span class="pill p-mute">—</span>')+'</td></tr>';}).join('');
+  $('#view').innerHTML='<div class="note">'+IC.info+'<span>'+esc(LANG==='en'?'No-show, cancellation and rating per clinic. Dummy numbers except today’s bookings, which follow the booking list.':'No-show, pembatalan, dan rating per klinik. Angka dummy, kecuali booking hari ini yang mengikuti daftar booking.')+'</span></div>'
+   +'<div class="card"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>'+esc(t('b_cl'))+'</th><th style="text-align:right">'+esc(t('c_today'))+'</th><th style="text-align:right">'+esc(t('c_in'))+'</th><th style="text-align:right">'+esc(t('c_ns'))+'</th><th style="text-align:right">'+esc(t('c_cx'))+'</th><th style="text-align:right">'+esc(t('c_rate'))+'</th><th>'+esc(t('c_fs'))+'</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';}
+ROUTES.members=['n_mem','cr_mem',renderMem];ROUTES.clinics=['n_cl','cr_cl',renderCl];
+var _rnav=renderNav;renderNav=function(){_rnav();var n=$('#nav');
+  function link(r,ic,k){return '<a href="#'+r+'"'+(cur===r?' aria-current="page"':'')+'>'+ic+'<span>'+esc(t(k))+'</span></a>';}
+  $$('#nav .soon').forEach(function(s){var k=s.querySelector('span').textContent;if(k===t('n_mem'))s.outerHTML=link('members',IC.mem,'n_mem');else if(k===t('n_cl'))s.outerHTML=link('clinics',IC.cl,'n_cl');});};
+/* flash-sale settings */
+var _rpr=renderPromo;renderPromo=function(){_rpr();var b=$('#view [data-soon]');if(b){b.removeAttribute('data-soon');b.id='prNew';}
+  var first=$('#view .promo .muted');if(first&&!$('#prRule'))first.insertAdjacentHTML('afterend','<small class="muted" id="prRule" style="display:block;margin-top:4px">'+esc(t('pr_rule'))+'</small>');
+  var ps=stEnsure().promos||[],card=$('#view .card');if(card&&ps.length)card.insertAdjacentHTML('beforeend',ps.map(function(p){var off=Math.round((1-p.price/p.normal)*100);return '<div class="promo"><div class="ph" style="background:'+BC[p.b]+'">'+esc(p.b==='EUROSKINLAB'?'ESL':p.b==='EUROHAIRLAB'?'EHL':p.b)+'</div><div><span class="pill p-info"><i></i>'+esc(t('pr_sched'))+'</span><h3>'+esc(p.n)+'</h3><span class="muted">'+esc(p.cl.join(', '))+' · '+esc(p.start.replace('T',' '))+' – '+esc(p.end.replace('T',' '))+'</span><div class="pr"><b>'+rp(p.price)+'</b><s>'+rp(p.normal)+'</s><span class="pill p-m">−'+off+'%</span></div><small class="muted" style="display:block;margin-top:4px">'+esc(t('pr_quota'))+' '+p.quota+' · '+esc(t({on:'pr_pay_on',dp:'pr_pay_dp',cl:'pr_pay_cl'}[p.pay]))+'</small></div><div class="ctl"><button type="button" class="btn btn-g btn-sm" data-prdel="'+p.id+'">'+esc(LANG==='en'?'Delete':'Hapus')+'</button></div></div>';}).join(''));};
+ROUTES.promo[2]=renderPromo;
+var PR_ITEMS=[['Kiloburn 3× course','ESC',4200000],['Lipocav 3× course','SLIM+',4050000],['Hydrawhite double session','SKIN+',2200000],['Hydrolift 50','EUROSKINLAB',2100000],['Scalp recovery programme','EUROHAIRLAB',2400000],['Barrier Repair Moisturiser','SKIN+',420000]];
+function openPrDrawer(){var d=document.createElement('div');d.id='drw';var it=PR_ITEMS[0];
+  d.innerHTML='<div class="scrim" data-dclose></div><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dH"><header><h2 id="dH">'+esc(t('pr_drawer'))+'</h2><button type="button" class="ib" data-dclose aria-label="Tutup">'+IC.x+'</button></header><div class="db">'
+   +'<div class="fld"><label for="pI">'+esc(t('pr_item'))+'</label><select id="pI">'+PR_ITEMS.map(function(x,i){return '<option value="'+i+'">'+esc(x[0])+' · '+x[1]+'</option>';}).join('')+'</select></div>'
+   +'<div class="grid2"><div class="fld"><label for="pN">'+esc(t('pr_normal'))+'</label><input id="pN" inputmode="numeric" value="'+it[2]+'"></div><div class="fld"><label for="pP">'+esc(t('pr_price'))+'</label><input id="pP" inputmode="numeric" value="'+Math.round(it[2]*.7/1000)*1000+'"></div></div>'
+   +'<div class="grid2"><div class="fld"><label for="pQ">'+esc(t('pr_quota'))+'</label><input id="pQ" type="number" min="1" value="40"></div><div class="fld"><label>&nbsp;</label><span class="muted" style="font-size:12.5px">'+esc(t('pr_hold'))+'</span></div></div>'
+   +'<div class="grid2"><div class="fld"><label for="pS">'+esc(t('pr_start'))+'</label><input id="pS" type="datetime-local" value="2026-11-14T10:00"></div><div class="fld"><label for="pE">'+esc(t('pr_end'))+'</label><input id="pE" type="datetime-local" value="2026-11-14T21:00"></div></div>'
+   +'<div class="fld"><label>'+esc(t('pr_elig'))+'</label><div class="ckl" id="pC">'+CL_ALL.map(function(c){return '<label><input type="checkbox" value="'+esc(c)+'"'+(c.indexOf('ESC')===0?' checked':'')+'> '+esc(c)+'</label>';}).join('')+'</div></div>'
+   +'<div class="fld"><label>'+esc(t('pr_pay'))+'</label><div class="ckl">'+[['on','pr_pay_on'],['dp','pr_pay_dp'],['cl','pr_pay_cl']].map(function(x,i){return '<label><input type="radio" name="pPay" value="'+x[0]+'"'+(i===0?' checked':'')+'> '+esc(t(x[1]))+'</label>';}).join('')+'</div></div>'
+   +'</div><footer style="padding:16px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px"><button type="button" class="btn btn-s" data-dclose>'+esc(LANG==='en'?'Cancel':'Batal')+'</button><button type="button" class="btn btn-p" id="prSave">'+esc(t('pr_create'))+'</button></footer></aside>';
+  document.body.appendChild(d);setTimeout(function(){$('#pI').focus();},40);}
+document.addEventListener('click',function(e){var x;
+  if((x=e.target.closest('[data-msel]'))){MSEL=x.dataset.msel;renderMem();return;}
+  if(e.target.closest('#prNew')){openPrDrawer();return;}
+  if((x=e.target.closest('[data-prdel]'))){var s=stEnsure();s.promos=(s.promos||[]).filter(function(p){return p.id!==x.dataset.prdel;});stSet(s);renderPromo();return;}
+  if(e.target.closest('#prSave')){var it=PR_ITEMS[+$('#pI').value],nm=+($('#pN').value||'').replace(/\D/g,''),pr=+($('#pP').value||'').replace(/\D/g,''),q=+$('#pQ').value||0,cl=$$('#pC input:checked').map(function(i){return i.value;});
+    if(!nm||!pr||pr>=nm||q<1||!cl.length){toast(t('pr_need'));return;}var s2=stEnsure();s2.promos=s2.promos||[];s2.promos.push({id:'p'+Date.now(),n:it[0],b:it[1],normal:nm,price:pr,quota:q,start:$('#pS').value,end:$('#pE').value,cl:cl,pay:($$('input[name="pPay"]:checked')[0]||{}).value||'on'});stSet(s2);closeDrawer();renderPromo();toast(t('toast_promo'));return;}
+},true);
+document.addEventListener('change',function(e){if(e.target.id==='pI'){var it=PR_ITEMS[+e.target.value];$('#pN').value=it[2];$('#pP').value=Math.round(it[2]*.7/1000)*1000;}});
+document.addEventListener('input',function(e){if(e.target.id==='mQ'){$('#q').value=e.target.value;var p=e.target.selectionStart;renderMem();var m=$('#mQ');m.focus();m.setSelectionRange(p,p);}});
+$('#q').addEventListener('input',function(){if(cur==='members')renderMem();});
+
 window.addEventListener('hashchange',route);
 stEnsure();applyLang();route();
 })();
