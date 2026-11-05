@@ -1,0 +1,221 @@
+<title>Panduan Flow Prototype Euromedica</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: single reading column, flow sections with numbered steps; prototype controls as a reference table */
+:root{
+  --bg:#FAF7F4; --surface:#FFFFFF; --ink:#241C18; --muted:#6B5F59; --line:#E8DFD8;
+  --accent:#6E2F4A; --accent-soft:#F4E7EC; --note:#FBF1E4; --note-ink:#7A4A12;
+  --f-display:"Newsreader",Georgia,serif; --f-body:"Manrope",system-ui,-apple-system,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1B1517; --surface:#241C1F; --ink:#F3ECE8; --muted:#B9ACA6; --line:#3A2F33;
+  --accent:#E3A9C1; --accent-soft:#3A2530; --note:#33281C; --note-ink:#F0C88F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1B1517; --surface:#241C1F; --ink:#F3ECE8; --muted:#B9ACA6; --line:#3A2F33;
+  --accent:#E3A9C1; --accent-soft:#3A2530; --note:#33281C; --note-ink:#F0C88F; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 15.5px/1.65 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:760px;margin:0 auto;padding-block:48px 80px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(34px,6vw,46px);line-height:1.08}
+h2{font-size:28px;line-height:1.15}
+h3{font-size:20px;line-height:1.25}
+p{margin:0;max-width:65ch}
+.lede{font-size:17px;color:var(--muted)}
+.eyebrow{font:600 11.5px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+header{display:flex;flex-direction:column;gap:14px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font:500 13px/1.4 var(--f-mono);color:var(--muted)}
+section{display:flex;flex-direction:column;gap:16px;min-width:0}
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px 20px;margin:0;padding:0;list-style:none;counter-reset:t}
+.toc a{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:14.5px}
+.toc a::before{counter-increment:t;content:counter(t,upper-alpha);font-family:var(--f-mono);color:var(--accent);font-weight:500}
+.toc a:hover,.toc a:focus-visible{color:var(--accent)}
+.flow{display:flex;flex-direction:column;gap:14px;padding:24px 0;border-top:1px solid var(--line)}
+.flow .hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.flow .tag{font:500 12px/1 var(--f-mono);color:var(--accent)}
+.entry{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13.5px;color:var(--muted)}
+.entry b{color:var(--ink);font-weight:600;margin-right:2px}
+.chip{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:12.5px;line-height:1.5}
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:10px}
+ol.steps li{position:relative;padding-left:38px;max-width:65ch}
+ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--bg);font:700 12px/1 var(--f-body)}
+ol.steps li strong{font-weight:700}
+.note{padding:12px 16px;border-radius:10px;background:var(--note);color:var(--note-ink);font-size:14px;max-width:65ch}
+.tbl{overflow-x:auto;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:520px}
+th,td{text-align:left;vertical-align:top;padding:12px 12px 12px 0;border-bottom:1px solid var(--line)}
+th{font:600 11.5px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+td:first-child{font-weight:600;white-space:nowrap}
+ul.plain{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+code{font:500 13px/1 var(--f-mono);background:var(--accent-soft);color:var(--accent);padding:2px 6px;border-radius:5px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (max-width:480px){main{padding-block:32px 56px;gap:36px}h2{font-size:24px}}
+</style>
+
+<main>
+  <header>
+    <span class="eyebrow">Prototype aplikasi member · 5 brand</span>
+    <h1>Panduan Flow Prototype Euromedica</h1>
+    <p class="lede">Cara memakai mockup klikable Euromedica untuk demo ke klien: panel kontrol, navigasi utama, dan alur yang bisa dicoba dari awal sampai akhir.</p>
+    <div class="meta"><span>File: index.html</span><span>Tanggal mockup: Selasa, 10 Nov 2026</span><span>Bahasa: ID / EN</span></div>
+  </header>
+
+  <section aria-labelledby="mulai">
+    <h2 id="mulai">Sebelum mulai</h2>
+    <ul class="plain">
+      <li>Buka <code>index.html</code> di browser desktop. Mockup tampil di dalam bingkai ponsel, dengan <strong>panel Prototype</strong> di sebelah kanan.</li>
+      <li>Hampir semua yang terlihat bisa ditap. Fitur yang belum dibuat menampilkan toast <em>“Fitur ini belum ada di prototype.”</em></li>
+      <li>Data di dalam mockup (nama, poin, harga, jadwal, klinik) adalah contoh. Perubahan hanya tersimpan selama tab terbuka; muat ulang halaman untuk kembali ke awal.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="panel">
+    <h2 id="panel">Panel Prototype</h2>
+    <p>Panel di kanan layar mengatur kondisi demo tanpa harus melewati alur panjang.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Kontrol</th><th>Pilihan</th><th>Gunanya</th></tr></thead>
+      <tbody>
+        <tr><td>Kondisi Beranda</td><td>Member baru · Member aktif</td><td>Member baru belum punya booking dan poin. Member aktif punya jadwal berikutnya, 4.820 Glow Points, riwayat, misi, dan voucher. Kebanyakan alur paling lengkap di <strong>Member aktif</strong>.</td></tr>
+        <tr><td>Simulasi promo Kiloburn</td><td>Promo normal · Kuota sudah habis · Habis saat konfirmasi</td><td>Menguji flash sale. “Habis saat konfirmasi” memunculkan strip penahan slot 3 menit di Booking, lalu popup kuota habis.</td></tr>
+        <tr><td>Feedback pasca-kunjungan</td><td>Kirim push · Reset</td><td>Memunculkan notifikasi push “Bagaimana Medical Trilogy 2.0 tadi?”. Reset mengembalikan feedback ke belum dinilai.</td></tr>
+        <tr><td>Ulangi prototype</td><td>–</td><td>Kembali ke layar pembuka untuk demo dari awal.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="nav">
+    <h2 id="nav">Navigasi utama</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Tab bar</th><th>Isi</th></tr></thead>
+      <tbody>
+        <tr><td>Beranda</td><td>Kolom cari beranimasi, lonceng notifikasi, keranjang, Glow Points, tiket kunjungan berikutnya, 5 brand, flash sale, produk, tips dokter, referral.</td></tr>
+        <tr><td>Jelajahi</td><td>Kolom cari, filter area, promo, paket hemat, produk, daftar semua perawatan, brand, Paling dicari. Tap tab ini sekali lagi untuk membuka pencarian.</td></tr>
+        <tr><td>Tombol kalender (tengah)</td><td>Langsung ke Booking.</td></tr>
+        <tr><td>Rewards</td><td>Kartu tier, misi berjalan, tukar poin, voucher, beli paket & gift card, riwayat poin.</td></tr>
+        <tr><td>Profil</td><td>Data member, Perawatanku (jadwal, riwayat, tujuan, tersimpan, voucher), brand kamu, akun & pengaturan.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="alur">
+    <h2 id="alur">Alur yang bisa dicoba</h2>
+    <ol class="toc">
+      <li><a href="#a-onboarding">Daftar akun baru</a></li>
+      <li><a href="#a-cari">Mencari perawatan</a></li>
+      <li><a href="#a-booking">Booking perawatan</a></li>
+      <li><a href="#a-flash">Members’ hours & flash sale</a></li>
+      <li><a href="#a-belanja">Belanja produk</a></li>
+      <li><a href="#a-rewards">Rewards, voucher & gift card</a></li>
+      <li><a href="#a-feedback">Feedback pasca-kunjungan</a></li>
+      <li><a href="#a-profil">Profil & pengaturan</a></li>
+    </ol>
+
+    <article class="flow" id="a-onboarding">
+      <div class="hd"><span class="tag">A</span><h3>Daftar akun baru</h3></div>
+      <div class="entry"><b>Masuk dari</b><span class="chip">Layar pembuka</span><span class="chip">Ulangi prototype</span></div>
+      <ol class="steps">
+        <li>Geser kartu pengenalan, lalu di layar Welcome pilih <strong>Mulai</strong>. Bahasa bisa diganti lewat tombol ID / EN di layar ini.</li>
+        <li>Isi nama dan nomor HP, lalu masukkan kode OTP.</li>
+        <li>Setujui syarat dan pilih saluran yang diizinkan (promo, telepon).</li>
+        <li>Pilih keluhan yang ingin dirawat, lalu pilih klinik utama.</li>
+        <li>Layar “Akun siap” merangkum pilihan, lalu masuk ke Beranda dalam kondisi Member baru.</li>
+      </ol>
+      <p class="note">Akses tamu tidak tersedia: pengguna wajib daftar dulu. Pengguna lama memakai “Saya sudah punya akun” untuk masuk lewat nomor HP + OTP.</p>
+    </article>
+
+    <article class="flow" id="a-cari">
+      <div class="hd"><span class="tag">B</span><h3>Mencari perawatan</h3></div>
+      <div class="entry"><b>Masuk dari</b><span class="chip">Kolom cari Beranda</span><span class="chip">Kolom cari Jelajahi</span><span class="chip">Tap ulang tab Jelajahi</span><span class="chip">“Tanyakan keluhanmu” di Pilih perawatan</span></div>
+      <ol class="steps">
+        <li>Di Beranda, kolom cari menampilkan logo Euromedica yang berputar, lalu contoh pencarian diketik bergantian (mis. “Rambut rontok”, “Bekas jerawat”).</li>
+        <li>Tap kolom: layar pencarian terbuka di tempat, tanpa pindah halaman.</li>
+        <li>Pilih saran <strong>“apa yang membantu rambut rontok?”</strong> untuk melihat jawaban singkat AI, kartu “Mulai di sini” ScalpFirst™, dan perawatan terkait.</li>
+        <li>Tap hasil untuk membuka detailnya, atau tombol kembali untuk balik ke halaman asal.</li>
+      </ol>
+      <p class="note">Jawaban AI baru tersedia untuk pertanyaan rambut rontok. Pertanyaan lain menampilkan pesan “belum ada hasil di prototype”.</p>
+    </article>
+
+    <article class="flow" id="a-booking">
+      <div class="hd"><span class="tag">C</span><h3>Booking perawatan</h3></div>
+      <div class="entry"><b>Masuk dari</b><span class="chip">Tombol kalender di tab bar</span><span class="chip">Booking di daftar perawatan</span><span class="chip">Detail perawatan</span><span class="chip">Slot jadwal terdekat</span><span class="chip">Booking lagi di Riwayat</span></div>
+      <ol class="steps">
+        <li>Kalau belum ada perawatan, tap <strong>Pilih perawatan</strong>: popup daftar perawatan per brand dan kategori. Tap baris untuk memilih.</li>
+        <li><strong>Pilih klinik</strong> dari daftar. Klinik utama ditandai “Klinik kamu”.</li>
+        <li><strong>Pilih tanggal & jam</strong> di kalender November–Desember 2026. Tanggal abu-abu penuh; slot bertanda ×2 memberi poin ganda.</li>
+        <li>Di Ringkasan, pilih <strong>Pakai hadiah</strong>: tanpa hadiah, 2.000 Glow Points, atau voucher.</li>
+        <li>Konfirmasi: muncul halaman <strong>Booking terkonfirmasi</strong> dengan tiket, kode booking + QR, langkah selanjutnya, dan klaim misi bila ada.</li>
+      </ol>
+      <p class="note">Dari detail perawatan, pilih paket (1 sesi / kursus) dan nyalakan Glow Points sebelum Booking; pilihan itu terbawa ke halaman Booking.</p>
+    </article>
+
+    <article class="flow" id="a-flash">
+      <div class="hd"><span class="tag">D</span><h3>Members’ hours & flash sale</h3></div>
+      <div class="entry"><b>Masuk dari</b><span class="chip">Flash sale Beranda</span><span class="chip">Banner Promo di Jelajahi</span><span class="chip">Notifikasi</span></div>
+      <ol class="steps">
+        <li>Buka halaman Members’ hours: penawaran live dengan hitung mundur, penawaran yang segera berakhir, akan datang, dan sudah lewat.</li>
+        <li>Tap penawaran Kiloburn: detail perawatan tampil dalam mode penawaran (harga promo, sisa kuota, klinik peserta).</li>
+        <li>Pilih <strong>Ambil penawaran</strong> untuk lanjut ke Booking dengan harga promo.</li>
+        <li>Ganti simulasi di panel ke “Kuota sudah habis” atau “Habis saat konfirmasi” untuk melihat popup kuota habis, alternatif perawatan, dan strip penahan slot 3 menit.</li>
+      </ol>
+    </article>
+
+    <article class="flow" id="a-belanja">
+      <div class="hd"><span class="tag">E</span><h3>Belanja produk</h3></div>
+      <div class="entry"><b>Masuk dari</b><span class="chip">Lanjutkan di rumah (Beranda)</span><span class="chip">Slider produk di Jelajahi</span><span class="chip">Ikon keranjang</span></div>
+      <ol class="steps">
+        <li>Tap produk untuk membuka detail: ukuran, cara pakai, kandungan, dan perawatan pasangannya. Tap <strong>+</strong> untuk menambah langsung ke keranjang.</li>
+        <li>Di <strong>Keranjang</strong>, pilih cara terima: ambil gratis di klinik, atau kirim ke rumah (Reguler / Instan).</li>
+        <li>Bisa pakai 1.000 Glow Points sebagai potongan, lalu tap <strong>Bayar sekarang</strong>. Metode bayar di keranjang masih contoh (VA BCA) dan belum bisa diganti.</li>
+        <li>Halaman pesanan menampilkan kode ambil atau status pengiriman, plus poin yang akan didapat.</li>
+      </ol>
+    </article>
+
+    <article class="flow" id="a-rewards">
+      <div class="hd"><span class="tag">F</span><h3>Rewards, voucher & gift card</h3></div>
+      <div class="entry"><b>Masuk dari</b><span class="chip">Tab Rewards</span><span class="chip">Glow Points di Beranda</span><span class="chip">Paket hemat di Jelajahi</span><span class="chip">Tombol Gift card di referral</span></div>
+      <ol class="steps">
+        <li><strong>Misi</strong>: lihat progres misi bulan November dan klaim misi yang selesai.</li>
+        <li><strong>Tukar poin</strong>: pilih hadiah, lalu konfirmasi di popup (butuh poin cukup, jadi pakai Member aktif).</li>
+        <li><strong>Voucher</strong>: buka detail voucher untuk kode QR dan syarat, lalu “Booking & pakai”.</li>
+        <li><strong>Beli paket hemat</strong> atau <strong>Kirim gift card</strong>: pilih paket atau nominal, isi penerima (gift), lalu pilih metode bayar: virtual account (BCA, Mandiri, BNI, BRI), QRIS, atau kartu kredit/debit.</li>
+        <li>VA dan QRIS menampilkan layar tunggu (nomor VA atau kode QR). Tap <strong>Saya sudah bayar</strong> untuk menyelesaikan. Kartu langsung selesai.</li>
+      </ol>
+    </article>
+
+    <article class="flow" id="a-feedback">
+      <div class="hd"><span class="tag">G</span><h3>Feedback pasca-kunjungan</h3></div>
+      <div class="entry"><b>Masuk dari</b><span class="chip">Push (panel: Kirim push)</span><span class="chip">Lonceng notifikasi</span><span class="chip">Riwayat poin di Rewards</span><span class="chip">Riwayat perawatan</span></div>
+      <ol class="steps">
+        <li>Form feedback fullscreen: pilih salah satu dari 4 emotikon (Kurang, Cukup, Bagus, Sempurna), pilih tag, tulis komentar bila mau.</li>
+        <li><strong>Bagus / Sempurna</strong>: layar terima kasih dengan +50 Glow Points. Sempurna juga menawarkan ulasan Google.</li>
+        <li><strong>Kurang / Cukup</strong>: layar “Kami ingin memperbaikinya” dengan kontak manajer klinik, opsi minta ditelepon, langkah selanjutnya, dan booking ulang di jam lebih sepi.</li>
+        <li>Setelah nilai rendah, lonceng menampilkan balasan dari manajer klinik.</li>
+      </ol>
+      <p class="note">Pakai <strong>Reset</strong> di panel untuk mengulang demo feedback.</p>
+    </article>
+
+    <article class="flow" id="a-profil">
+      <div class="hd"><span class="tag">H</span><h3>Profil & pengaturan</h3></div>
+      <div class="entry"><b>Masuk dari</b><span class="chip">Tab Profil</span></div>
+      <ol class="steps">
+        <li><strong>Riwayat perawatan</strong>: kursus yang sedang berjalan, filter per brand, timeline kunjungan dengan nilai feedback dan tombol Booking lagi.</li>
+        <li><strong>Tersimpan</strong>: perawatan dan produk yang disimpan lewat ikon bookmark di halaman detail.</li>
+        <li><strong>Notifikasi & persetujuan</strong>: atur pengingat, promo, WhatsApp, dan izin telepon.</li>
+        <li><strong>Bahasa</strong>: ganti ID / EN langsung dari baris Bahasa.</li>
+      </ol>
+    </article>
+  </section>
+
+  <section aria-labelledby="catatan">
+    <h2 id="catatan">Catatan untuk demo</h2>
+    <ul class="plain">
+      <li>Semua angka, harga, klinik, dokter, dan tanggal adalah data contoh dan perlu dikonfirmasi ke klien sebelum masuk desain final.</li>
+      <li>Fitur yang belum dibuat ditandai toast, antara lain: kartu member QR, chat dengan klinik, unduh data, hapus akun, kuis “Belum yakin mulai dari mana?”.</li>
+      <li>Untuk demo paling lengkap: pilih <strong>Member aktif</strong> di panel, lalu jalankan alur C, F, dan G.</li>
+    </ul>
+  </section>
+</main>
